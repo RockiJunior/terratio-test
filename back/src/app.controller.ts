@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { EarthEngineService } from './earth-engine-service/EarthEngineService';
+import { EarthEngineService } from './earth-engine-service/earth-engine.service';
 var privateKey = require('../private-key/private-key.json');
 @Controller()
 export class AppController {
@@ -10,10 +10,10 @@ export class AppController {
   ) {}
 
   @Get()
-  async getHello(): Promise<any> {
-    const imageData =
-      await this.earthEngineService.authenticateAndRunAnalysis(privateKey);
-    return imageData;
-    // return this.appService.getHello();
+  async getHello(): Promise<string> {
+    return 'Hello World';
+    // const imageData =
+    //   await this.earthEngineService.authenticateAndRunAnalysis(privateKey);
+    // return imageData;
   }
 }
