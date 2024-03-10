@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get } from '@nestjs/common';
 import { EarthEngineService } from './earth-engine.service';
-import * as ee from '@google/earthengine'
+import * as ee from '@google/earthengine';
 
 @Controller('earth-engine')
 export class EarthEngineController {
@@ -22,14 +22,8 @@ export class EarthEngineController {
   }
 
   @Get('polygon-area')
-  async getFieldArea(): Promise<any> {
-    const polygon = ee.Geometry.Polygon([
-      [-62.1427136525986, -32.78329173054609],
-      [-61.97688876246188, -32.78329173054609],
-      [-61.97688876246188, -32.6663158291671],
-      [-62.1427136525986, -32.6663158291671],
-      [-62.1427136525986, -32.78329173054609],
-    ]);
+  async getFieldArea(@Body() body: any): Promise<any> {
+    const { polygon } = body;
     return this.earthEngineService.polygonToArea(polygon);
   }
 
