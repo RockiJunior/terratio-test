@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Put,
+} from '@nestjs/common';
 import { LotsService } from './lots.service';
 import { CreateLotDto } from './dto/create-lot.dto';
 import { UpdateLotDto } from './dto/update-lot.dto';
@@ -7,12 +15,12 @@ import { UpdateLotDto } from './dto/update-lot.dto';
 export class LotsController {
   constructor(private readonly lotsService: LotsService) {}
 
-  @Post()
+  @Post('')
   create(@Body() createLotDto: CreateLotDto) {
     return this.lotsService.create(createLotDto);
   }
 
-  @Get()
+  @Get('')
   findAll() {
     return this.lotsService.findAll();
   }
@@ -22,7 +30,7 @@ export class LotsController {
     return this.lotsService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateLotDto: UpdateLotDto) {
     return this.lotsService.update(+id, updateLotDto);
   }

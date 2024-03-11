@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLotDto } from './dto/create-lot.dto';
 import { UpdateLotDto } from './dto/update-lot.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Lots } from './entities/lot.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class LotsService {
-  create(createLotDto: CreateLotDto) {
-    return 'This action adds a new lot';
+  constructor(
+    @InjectRepository(Lots) private readonly lotsRepository: Repository<Lots>,
+  ) {}
+
+  async create(createLotDto: CreateLotDto) {
+    const result = this.lotsRepository.create(createLotDto);
+    return result;
   }
 
-  findAll() {
-    return `This action returns all lots`;
+  async findAll() {
+    const result = await this.lotsRepository.find();
+    return result;
   }
 
   findOne(id: number) {
