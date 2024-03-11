@@ -16,17 +16,14 @@ export class Lots {
   @Column({ type: 'varchar', length: 255, nullable: true })
   lot_name: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  polygon: string;
+  @Column({ type: 'jsonb', nullable: true })
+  polygon: any;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  area: string;
+  square_meters: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  location: string;
-
-  @Column({ type: 'decimal', nullable: true })
-  size: number;
+  @Column({ type: 'varchar', nullable: true })
+  hectares: string;
 
   @Column({
     type: 'enum',

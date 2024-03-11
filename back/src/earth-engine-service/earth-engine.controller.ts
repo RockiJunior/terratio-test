@@ -21,10 +21,16 @@ export class EarthEngineController {
     return this.earthEngineService.getWeather();
   }
 
-  @Get('polygon-area')
+  @Get('polygon-hectares')
   async getFieldArea(@Body() body: any): Promise<any> {
     const { polygon } = body;
-    return this.earthEngineService.polygonToArea(polygon);
+    return await this.earthEngineService.polygonToHectares(polygon);
+  }
+
+  @Get('polygon-square-meters')
+  async getPolygonSquareMeters(@Body() body: any): Promise<any> {
+    const { polygon } = body;
+    return await this.earthEngineService.polygonToSquareMeters(polygon);
   }
 
   @Get('land-type')

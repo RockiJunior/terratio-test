@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 // let ee = require('@google/earthengine');
-import * as ee from '@google/earthengine'
+import * as ee from '@google/earthengine';
 
 @Injectable()
 export class EarthEngineService {
@@ -48,12 +48,20 @@ export class EarthEngineService {
     // Implementa el análisis para obtener datos meteorológicos y devuelve los resultados
   }
 
-  async polygonToArea(polygon: any): Promise<any> {
-    let areaM2 = ee.Geometry(polygon).area();
+  async polygonToHectares(polygon: any): Promise<any> {
+    const realPolygon = ee.Geometry.Polygon(polygon);
+    let areaM2 = ee.Geometry(realPolygon).area();
     let areaHa = ee.Number(areaM2).divide(10000);
     return {
-      polygonToArea: await areaHa.getInfo(),
+      polygonToHectares: await areaHa.getInfo(),
     };
+  }
+
+  async polygonToSquareMeters(polygon: any): Promise<any> {
+    const realPolygon = ee.Geometry.Polygon(polygon);
+    const areaM2 = ee.Geometry(realPolygon).area();
+    const areaSquareMeters = await ee.Number(areaM2).getInfo();
+    return { polygonToSquareMeters: areaSquareMeters.toFixed(2) };
   }
 
   async getLandType(): Promise<any> {
