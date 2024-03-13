@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import * as ee from '@google/earthengine';
-let privateKey = require('../../private-key/private-key.json'); // Importa el objeto JSON de la clave privada
+let privateKey = require('../../private-key/private-key.json');
 
 @Injectable()
 export class EarthEngineMiddleware implements NestMiddleware {

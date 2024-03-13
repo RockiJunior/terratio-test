@@ -13,10 +13,26 @@ export class LotsService {
     private earthEngineService: EarthEngineService,
   ) {}
 
+  async findAll() {
+    const result = await this.lotsRepository.find();
+    return result;
+  }
+
+  async findOne(id: number) {
+    const result = await this.lotsRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    return result;
+  }
+
   async create(createLotDto: CreateLotDto) {
     const { polygon } = createLotDto;
+
     const { polygonToSquareMeters } =
       await this.earthEngineService.polygonToSquareMeters(polygon);
+
     const { polygonToHectares } =
       await this.earthEngineService.polygonToHectares(polygon);
 
@@ -36,20 +52,40 @@ export class LotsService {
     }
   }
 
-  async findAll() {
-    const result = await this.lotsRepository.find();
-    return result;
+  async update(id: number, updateLotDto: UpdateLotDto) {
+    try {
+      await this.lotsRepository.update(id, updateLotDto);
+      const result = await this.lotsRepository.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (!result) {
+        throw new Error('Error Updating Lot');
+      }
+      return result;
+    } catch (err) {
+      console.error(err);
+      return {
+        message: err.message,
+      };
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} lot`;
-  }
-
-  update(id: number, updateLotDto: UpdateLotDto) {
-    return `This action updates a #${id} lot`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} lot`;
+  async remove(id: number) {
+    try {
+      await this.lotsRepository.update(id, {
+        deleted_at: new Date(),
+        is_deleted: true,
+      });
+      return {
+        message: 'Lot deleted successfully',
+      };
+    } catch (err) {
+      console.error(err);
+      return {
+        message: err,
+      };
+    }
   }
 }

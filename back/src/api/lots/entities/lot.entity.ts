@@ -11,7 +11,7 @@ import { CurrencyEnum, LotsEnum } from '../enum/lots-state.enum';
 @Entity(`${EntityNames.lots}`)
 export class Lots {
   @PrimaryGeneratedColumn('identity')
-  id: string;
+  id: number;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   lot_name: string;
@@ -40,6 +40,9 @@ export class Lots {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   owner: string;
+
+  @Column({ type: 'boolean', nullable: true })
+  is_deleted: boolean;
 
   // -------------------------------- created_at
   @Column({ type: 'timestamp', nullable: true })
