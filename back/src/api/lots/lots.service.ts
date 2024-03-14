@@ -14,29 +14,50 @@ export class LotsService {
   ) {}
 
   async findAll() {
-    const result = await this.lotsRepository.find();
-    return result;
-  }
-
-  async findOne(id: number) {
-    const result = await this.lotsRepository.findOne({
+    try {
+    } catch (err) {
+      console.error(err);
+      return {
+        message: err.message,
+      };
+    }
+    const result = await this.lotsRepository.find({
       where: {
-        id: id,
+        is_deleted: false,
       },
     });
     return result;
   }
 
+  async findOne(id: number) {
+    try {
+      const result = await this.lotsRepository.findOne({
+        where: {
+          id: id,
+          is_deleted: false,
+        },
+      });
+      if (!result) {
+        throw new Error('Could not find the specified lot');
+      }
+      return result;
+    } catch (err) {
+      console.error(err);
+      return {
+        message: err.message,
+      };
+    }
+  }
+
   async create(createLotDto: CreateLotDto) {
     const { polygon } = createLotDto;
-
-    const { polygonToSquareMeters } =
-      await this.earthEngineService.polygonToSquareMeters(polygon);
-
-    const { polygonToHectares } =
-      await this.earthEngineService.polygonToHectares(polygon);
-
     try {
+      const { polygonToSquareMeters } =
+        await this.earthEngineService.polygonToSquareMeters(polygon);
+
+      const { polygonToHectares } =
+        await this.earthEngineService.polygonToHectares(polygon);
+
       const result = this.lotsRepository.create({
         ...createLotDto,
         square_meters: polygonToSquareMeters,
@@ -45,10 +66,13 @@ export class LotsService {
       await this.lotsRepository.save(result);
 
       return {
-        message: 'Lote Cargado correctamente',
+        message: 'Lot Loaded Succesfully',
       };
     } catch (err) {
       console.error(err);
+      return {
+        message: err.message,
+      };
     }
   }
 
@@ -84,7 +108,7 @@ export class LotsService {
     } catch (err) {
       console.error(err);
       return {
-        message: err,
+        message: err.message,
       };
     }
   }

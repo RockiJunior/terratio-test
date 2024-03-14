@@ -37,7 +37,7 @@ export class LotsController {
     return await this.lotsService.update(id, updateLotDto);
   }
 
-  @Delete('')
+  @Delete(':id')
   async delete(@Param('id') id: number): Promise<any> {
     return await this.lotsService.remove(id);
   }

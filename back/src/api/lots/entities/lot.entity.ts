@@ -41,7 +41,7 @@ export class Lots {
   @Column({ type: 'varchar', length: 255, nullable: true })
   owner: string;
 
-  @Column({ type: 'boolean', nullable: true })
+  @Column({ type: 'boolean', nullable: true, default: false })
   is_deleted: boolean;
 
   // -------------------------------- created_at
